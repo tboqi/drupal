@@ -318,7 +318,7 @@ $settings['hash_salt'] = 'Rv6ZN5S5DgQyL8g8YNiLFx9rQ08nE2LkFKOlegswboxBbU9QSKQmDB
  * After finishing the upgrade, be sure to open this file again and change the
  * TRUE back to a FALSE!
  */
-$settings['update_free_access'] = FALSE;
+$settings['update_free_access'] = false;
 
 /**
  * External access proxy settings:
@@ -427,7 +427,6 @@ $settings['update_free_access'] = FALSE;
  */
 # $settings['omit_vary_cookie'] = TRUE;
 
-
 /**
  * Cache TTL for client error (4xx) responses.
  *
@@ -473,14 +472,14 @@ $settings['update_free_access'] = FALSE;
  */
 /*
 if ($settings['hash_salt']) {
-  $prefix = 'drupal.' . hash('sha256', 'drupal.' . $settings['hash_salt']);
-  $apc_loader = new \Symfony\Component\ClassLoader\ApcClassLoader($prefix, $class_loader);
-  unset($prefix);
-  $class_loader->unregister();
-  $apc_loader->register();
-  $class_loader = $apc_loader;
+$prefix = 'drupal.' . hash('sha256', 'drupal.' . $settings['hash_salt']);
+$apc_loader = new \Symfony\Component\ClassLoader\ApcClassLoader($prefix, $class_loader);
+unset($prefix);
+$class_loader->unregister();
+$apc_loader->register();
+$class_loader = $apc_loader;
 }
-*/
+ */
 
 /**
  * Authorized file system operations:
@@ -743,7 +742,8 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  * will allow the site to run off of all variants of example.com and
  * example.org, with all subdomains included.
  */
-
+$settings['trusted_host_patterns'] = array(
+);
 /**
  * The default list of directories that will be ignored by Drupal's file API.
  *
@@ -755,8 +755,8 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  * @see \Drupal\Core\Extension\ExtensionDiscovery::scanDirectory()
  */
 $settings['file_scan_ignore_directories'] = [
-  'node_modules',
-  'bower_components',
+    'node_modules',
+    'bower_components',
 ];
 
 /**
@@ -783,15 +783,15 @@ $settings['entity_update_batch_size'] = 50;
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
-$databases['default']['default'] = array (
-  'database' => 'drupal845',
-  'username' => 'root',
-  'password' => 'root',
-  'prefix' => 'drupal845_',
-  'host' => '10.0.75.1',
-  'port' => '3306',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-  'driver' => 'mysql',
+$databases['default']['default'] = array(
+    'database' => 'drupal845',
+    'username' => 'root',
+    'password' => 'root',
+    'prefix' => 'drupal845_',
+    'host' => '10.0.75.1',
+    'port' => '3306',
+    'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+    'driver' => 'mysql',
 );
 $settings['install_profile'] = 'standard';
 $config_directories['sync'] = 'sites/default/files/config_Vx70bvssxDGfonmDJJMHaFih5GEDhBK_HtxDb_NkRBByucOVokrTQY54mB_9pfJypCgdogTpvQ/sync';
