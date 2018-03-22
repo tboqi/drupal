@@ -1,4 +1,11 @@
+使用 tag 8.4.5 开发
 
+composer install
+
+http://drupal.local:10080/ 开始安装
+
+
+------------------------------
 CONTENTS OF THIS FILE
 ---------------------
 
