@@ -1,0 +1,15 @@
+<?php
+/**
+ * @file
+ * Bootstrap Blog theme.
+ *
+ * Place your custom PHP code in this file.
+ */
+function bootstrapblog_preprocess_page(array &$variables) {
+
+  // Load the site name out of configuration.
+  $config = \Drupal::config('system.site');
+  $variables['site_name'] = $config->get('name');
+  $variables['site_slogan'] = $config->get('slogan');
+
+}
