@@ -784,7 +784,7 @@ $settings['entity_update_batch_size'] = 50;
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 $databases['default']['default'] = array(
-    'database' => 'drupal845',
+    'database' => 'drupal845_blog',
     'username' => 'root',
     'password' => 'root',
     'prefix' => 'drupal845_',
