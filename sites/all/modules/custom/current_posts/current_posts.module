@@ -92,14 +92,25 @@ function current_posts_block_view($delta = '') {
             'data' => l($node->title, 'node/' . $node->nid),
           );
         }
-       // No content in the last week.
+        // No content in the last week.
         if (empty($items)) {
           $block['content'] = t('No posts available.');
         }
         else {
           // Pass data through theme function.
-          $block['content'] = theme('item_list', array(
-            'items' => $items));
+          // $block['content'] = theme('item_list', array(
+          //   'items' => $items));
+          //Pass data through theme function.
+          $block['content']['posts'] = array(
+            '#theme' => 'item_list__current_posts__block',
+            '#items' => $items,
+          );
+          //Add a link to the page for more entries.
+          $block['content']['more'] = array(
+            '#theme' => 'more_link__current_posts',
+            '#url' => 'current_posts',
+            '#title' => t('See the full list of current posts.'),
+          );
         }
       }
     return $block;
@@ -128,7 +139,7 @@ function current_posts_menu() {
     'title' => 'Current posts',
     'page callback' => '_current_posts_page',
     'access arguments' => array('access current_posts content'),
-    'type' => MENU_NORMAL_ITEM, // Will appear in Navigation menu.
+    'type' => MENU_CALLBACK, // Will appear in Navigation menu.
   );
 
   return $items;
