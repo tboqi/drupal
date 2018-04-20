@@ -34,6 +34,9 @@ function current_posts_block_info() {
   return $blocks;
 }
 /**
+ * 启用数据库命令
+ * http://drupalchina.cn/doc/915.html
+ *
  * Custom content function.
  *
  * Set beginning and end dates, retrieve posts from database
@@ -42,10 +45,10 @@ function current_posts_block_info() {
  * @return
  *   A result set of the targeted posts.
  */
-function current_posts_contents(){
+function current_posts_contents($display){   //$display argument is new.
   //Get today's date.
   $today = getdate();
-  //Calculate the date a week ago.
+  //Calculate midnight a week ago.
   $start_time = mktime(0, 0, 0,$today['mon'],($today['mday'] - 7), $today['year']);
   //Get all posts from one week ago to the present.
   $end_time = time();
@@ -57,10 +60,15 @@ function current_posts_contents(){
     ->fields('n', array('nid', 'title', 'created'))
     // ->condition('status', 1) //Published.
     // ->condition('created', array($start_time, $end_time), 'BETWEEN')
-    ->orderBy('created', 'DESC') //Most recent first.
-    ->range(0, $max_num) //NEW LINE
-    ->execute();
-  return $query;
+    ->orderBy('created', 'DESC'); //Most recent first. Query paused here.
+
+   if ($display == 'block'){
+  // Restrict the range if called with 'block' argument.
+    $query->range(0, $max_num);
+  } //Now proceeds to execute().
+  //If called by page, query proceeds directly to execute().
+
+  return $query->execute();
 }
 /**
  * https://www.drupal.org/docs/7/creating-custom-modules/generating-block-content
@@ -72,10 +80,10 @@ function current_posts_contents(){
 function current_posts_block_view($delta = '') {
   switch ($delta) {
     case 'current_posts':
-      $block['subject'] = t('Current posts111');
+      $block['subject'] = 'current_posts区块';
       if (user_access('access content')) {
         // Use our custom function to retrieve data.
-        $result = current_posts_contents();
+        $result = current_posts_contents('block');
         // Array to contain items for the block to render.
         $items = array();
         // Iterate over the resultset and format as links.
@@ -180,9 +188,34 @@ function current_posts_permission() {
   );
 }
 /**
- * 新页面
- * @return [type] [description]
- */
+ * 主题化页面
+ * http://drupalchina.cn/doc/931.html
+* Custom page callback function, declared in current_posts_menu().
+*/
 function _current_posts_page() {
-    return 'asfsdf';
+  $result = current_posts_contents('page');
+  //Array to contain items for the page to render.
+  $items = array();
+  //Iterate over the resultset and format as links.
+  foreach ($result as $node) {
+    $items[] = array(
+    'data' => l($node->title, 'node/' . $node->nid),
+    );
+  }
+  if (empty($items)) { //No content in the last week.
+    $page_array['current_posts_arguments'] = array(
+      //Title serves as page subtitle
+      '#title' => t('All posts from the last week页面'),
+      '#markup' => t('No posts available.'),
+    );
+    return $page_array;
+  }else {
+    $page_array['current_posts_arguments'] = array(
+      '#title' => t('All posts from the last 页面week'),
+      '#items' => $items,
+      //Theme hook with suggestion.
+      '#theme' => 'item_list__current_posts',
+    );
+    return $page_array;
+  }
 }
