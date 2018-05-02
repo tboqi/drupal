@@ -23,5 +23,5 @@ regions[page_bottom]    = 'Page bottom'
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Stylesheets
 ;;;;;;;;;;;;;;;;;;;;;
-
+exclude[css][] = 'sites/all/themes/bootstrapblog/css/style.css'
 stylesheets[all][] = css/style.css
