@@ -8,3 +8,4 @@ sites/default/files/languages/*
 .buildpath
 .project
 .settings
+/nbproject/
