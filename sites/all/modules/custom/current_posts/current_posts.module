@@ -101,21 +101,19 @@ function current_posts_block_view($delta = '') {
         // Iterate over the resultset and format as links.
         foreach ($result as $node) {
           $items[] = array(
-            'data' => l($node->title, $node->field_url['und'][0]['url']),
+//             'data' => l($node->title, $node->field_url['und'][0]['url']),
+          	'data' => "<a href=\"{$node->field_url['und'][0]['url']}\" target=\"_blank\">{$node->title}</a>",
           );
         }
+//         var_dump($items);exit;
         // No content in the last week.
         if (empty($items)) {
           $block['content'] = t('No posts available.');
         }
         else {
-					$block['content']['posts'] = array(
-        	  '#theme' => 'item_list',
-        		'#items' => $items,
-        	);
           // Pass data through theme function.
-//           $block['content'] = theme('item_list', array(
-//             'items' => $items));
+          $block['content'] = theme('item_list', array(
+            'items' => $items));
           //Pass data through theme function.
 //           $block['content']['posts'] = array(
 //             '#theme' => 'item_list__current_posts__block',
@@ -232,13 +230,13 @@ function _current_posts_page() {
   if (empty($items)) { //No content in the last week.
     $page_array['current_posts_arguments'] = array(
       //Title serves as page subtitle
-      '#title' => t('All posts from the last week页面'),
+      '#title' => t('All posts from the last week'),
       '#markup' => t('No posts available.'),
     );
     return $page_array;
   }else {
     $page_array['current_posts_arguments'] = array(
-      '#title' => t('All posts from the last 页面week'),
+      '#title' => t('All posts from the last week'),
       '#items' => $items,
       //Theme hook with suggestion.
       '#theme' => 'item_list__current_posts',
