@@ -46,41 +46,30 @@ function current_posts_block_info() {
  *   A result set of the targeted posts.
  */
 function current_posts_contents($display){   //$display argument is new.
-  //Get today's date.
-  $today = getdate();
-  //Calculate midnight a week ago.
-  $start_time = mktime(0, 0, 0,$today['mon'],($today['mday'] - 7), $today['year']);
-  //Get all posts from one week ago to the present.
-  $end_time = time();
+  $max_num = variable_get('current_posts_max', 3); //后台表单设置
 
-  $max_num = variable_get('current_posts_max', 3);
+  $query = db_select('taxonomy_term_data', 'ttd')->fields('ttd')->condition('vid', 2);
+  $taxonomy_term_data_list = $query->execute()->fetchAll();
 
-  //Use Database API to retrieve current posts.
-  $query = db_select('node', 'n')
-    ->fields('n', array('nid', 'title', 'created'))
-    ->condition('status', 1) //Published.
-    ->condition('type', 'test')
-    // ->condition('created', array($start_time, $end_time), 'BETWEEN')
-    ->orderBy('created', 'DESC'); //Most recent first. Query paused here.
-
-//    if ($display == 'block'){
-//   // Restrict the range if called with 'block' argument.
-//     $query->range(0, $max_num);
-//   } //Now proceeds to execute().
-  //If called by page, query proceeds directly to execute().
-  $query->range(0, 100);
-  $nids = $query->execute()->fetchCol();
-  
-  if (!empty($nids)) {
-  	$nodes = node_load_multiple($nids);
-  }else {
-  	$nodes['default_message'] = array(
-  			'#markup' => '无',
-  			'#prefix' => '<div id="first-time">',
-  			'#suffix' => '</div>',
-  	);
+  $items = [];
+  foreach ($taxonomy_term_data_list as $key => $taxonomy_term_data) {
+    $row = [
+      'data' => $taxonomy_term_data->name,
+    ];
+    $query = db_select('taxonomy_index', 'ti')->fields('ti', ['nid','tid'])
+      ->condition('tid', $taxonomy_term_data->tid);
+    $nids = $query->execute()->fetchCol();
+    if (!empty($nids)) {
+      $nodes = node_load_multiple($nids);
+      $sub_items = array();
+      foreach ($nodes as $key => $node) {
+        $sub_items[] = ['data' => "<a href=\"{$node->field_url['und'][0]['url']}\" target=\"_blank\">{$node->title}</a>",];
+      }
+      $row['children'] = $sub_items;
+    }
+    $items[] = $row;
   }
-  return $nodes;
+  return $items;
 }
 /**
  * https://www.drupal.org/docs/7/creating-custom-modules/generating-block-content
@@ -95,36 +84,14 @@ function current_posts_block_view($delta = '') {
       $block['subject'] = '友情链接';
       if (user_access('access content')) {
         // Use our custom function to retrieve data.
-        $result = current_posts_contents('block');
-        // Array to contain items for the block to render.
-        $items = array();
-        // Iterate over the resultset and format as links.
-        foreach ($result as $node) {
-          $items[] = array(
-//             'data' => l($node->title, $node->field_url['und'][0]['url']),
-          	'data' => "<a href=\"{$node->field_url['und'][0]['url']}\" target=\"_blank\">{$node->title}</a>",
-          );
-        }
-//         var_dump($items);exit;
+        $items = current_posts_contents('block');
         // No content in the last week.
         if (empty($items)) {
           $block['content'] = t('No posts available.');
-        }
-        else {
+        } else {
           // Pass data through theme function.
           $block['content'] = theme('item_list', array(
             'items' => $items));
-          //Pass data through theme function.
-//           $block['content']['posts'] = array(
-//             '#theme' => 'item_list__current_posts__block',
-//             '#items' => $items,
-//           );
-          //Add a link to the page for more entries.
-//           $block['content']['more'] = array(
-//             '#theme' => 'more_link__current_posts',
-//             '#url' => 'current_posts',
-//             '#title' => t('See the full list of current posts.'),
-//           );
         }
       }
     return $block;
