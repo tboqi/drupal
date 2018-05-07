@@ -90,8 +90,7 @@ function current_posts_block_view($delta = '') {
           $block['content'] = t('No posts available.');
         } else {
           // Pass data through theme function.
-          $block['content'] = theme('item_list', array(
-            'items' => $items));
+          $block['content'] = theme('item_list', array('items' => $items));
         }
       }
     return $block;
