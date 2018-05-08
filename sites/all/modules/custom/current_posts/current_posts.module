@@ -18,7 +18,6 @@ function current_posts_help($path, $arg) {
       break;
   }
 }
-
 /**
  * 区块
  * Implements hook_block_info().
@@ -63,13 +62,25 @@ function current_posts_contents($display){   //$display argument is new.
       $nodes = node_load_multiple($nids);
       $sub_items = array();
       foreach ($nodes as $key => $node) {
-        $sub_items[] = ['data' => "<a href=\"{$node->field_url['und'][0]['url']}\" target=\"_blank\">{$node->title}</a>",];
+        $sub_items[] = [
+          'title' => $node->title,
+          'url' => $node->field_url['und'][0]['url'],
+        ];
       }
-      $row['children'] = $sub_items;
+      $row['sub_items'] = $sub_items;
     }
     $items[] = $row;
   }
   return $items;
+}
+
+function current_posts_theme() {
+  return [
+    'youqinglianjie_block' => [
+      'template' => 'youqinglianjie_block',
+      'variables' => array('items' => []),
+    ],
+  ];
 }
 /**
  * https://www.drupal.org/docs/7/creating-custom-modules/generating-block-content
@@ -81,6 +92,11 @@ function current_posts_contents($display){   //$display argument is new.
 function current_posts_block_view($delta = '') {
   switch ($delta) {
     case 'current_posts':
+      $items = current_posts_contents('block');
+      $block['content'] = theme('youqinglianjie_block', ['items' => $items]);
+      break;
+
+    case 'current_postsbak':
       $block['subject'] = '友情链接';
       if (user_access('access content')) {
         // Use our custom function to retrieve data.
@@ -93,8 +109,9 @@ function current_posts_block_view($delta = '') {
           $block['content'] = theme('item_list', array('items' => $items));
         }
       }
-    return $block;
+
   }
+  return $block;
 }
 
 /**
