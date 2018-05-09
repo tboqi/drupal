@@ -247,13 +247,13 @@
 $databases = array(
     'default' => array(
         'default' => array(
-            'database' => 'drupal7',
+            'database' => 'drupal7blog',
             'username' => 'root',
             'password' => 'root',
             'host' => '10.0.75.1',
             'port' => '',
             'driver' => 'mysql',
-            'prefix' => 'drupal7_',
+            'prefix' => 'drupal757_',
         ),
     ),
 );

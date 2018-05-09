@@ -1,4 +1,11 @@
+sites\default 这是使用minimal安装的 用于测试开发
+http://*.drupal7.tbq/ http://drupal7.tbq/
 
+sites\blog.drupal7.tbq 博客网站
+http://blog.drupal7.tbq:10080/
+
+-------------
+---------------
 CONTENTS OF THIS FILE
 ---------------------
 
