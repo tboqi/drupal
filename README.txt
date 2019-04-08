@@ -1,3 +1,5 @@
+更新为7.65版 -- 190408
+-------
 sites\default 这是使用minimal安装的 用于测试开发
 http://*.drupal7.tbq/ http://drupal7.tbq/
 
