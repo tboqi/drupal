@@ -1,7 +1,12 @@
+多站点设置
+-----------------
+
+https://www.drupal.org/docs/8/multisite/drupal-8-multisite
+
 安装:
 -----------
 
-使用git 中的tag : 8.6.14安装
+使用git 中的tag : 8.6.14安装 php7.2
 http://drupal86.com:10280/
 PHP OPCODE 缓存
 
