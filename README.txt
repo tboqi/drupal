@@ -1,3 +1,9 @@
+安装:
+-----------
+
+使用git 中的tag : 8.6.14安装
+http://drupal86.com:10280/
+PHP OPCODE 缓存
 
 CONTENTS OF THIS FILE
 ---------------------
