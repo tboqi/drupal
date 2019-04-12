@@ -55,7 +55,3 @@
  * @see \Drupal\Core\DrupalKernel::getSitePath()
  * @see https://www.drupal.org/documentation/install/multi-site
  */
-
-$sites['site1.drupal86.com'] = 'site1';
-$sites['my.drupal86_local.com'] = 'my';
-$sites['my1.drupal86_local.com'] = 'my1';
