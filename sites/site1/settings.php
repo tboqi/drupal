@@ -303,7 +303,7 @@ $settings['hash_salt'] = 'f93YnXH1UnFKVvESB30-zOvwEsSKvv99_gvpZDAfgmuZE8xKGMay3H
  * After finishing the upgrade, be sure to open this file again and change the
  * TRUE back to a FALSE!
  */
-$settings['update_free_access'] = FALSE;
+$settings['update_free_access'] = false;
 
 /**
  * External access proxy settings:
@@ -412,7 +412,6 @@ $settings['update_free_access'] = FALSE;
  */
 # $settings['omit_vary_cookie'] = TRUE;
 
-
 /**
  * Cache TTL for client error (4xx) responses.
  *
@@ -458,14 +457,14 @@ $settings['update_free_access'] = FALSE;
  */
 /*
 if ($settings['hash_salt']) {
-  $prefix = 'drupal.' . hash('sha256', 'drupal.' . $settings['hash_salt']);
-  $apc_loader = new \Symfony\Component\ClassLoader\ApcClassLoader($prefix, $class_loader);
-  unset($prefix);
-  $class_loader->unregister();
-  $apc_loader->register();
-  $class_loader = $apc_loader;
+$prefix = 'drupal.' . hash('sha256', 'drupal.' . $settings['hash_salt']);
+$apc_loader = new \Symfony\Component\ClassLoader\ApcClassLoader($prefix, $class_loader);
+unset($prefix);
+$class_loader->unregister();
+$apc_loader->register();
+$class_loader = $apc_loader;
 }
-*/
+ */
 
 /**
  * Authorized file system operations:
@@ -740,8 +739,8 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  * @see \Drupal\Core\Extension\ExtensionDiscovery::scanDirectory()
  */
 $settings['file_scan_ignore_directories'] = [
-  'node_modules',
-  'bower_components',
+    'node_modules',
+    'bower_components',
 ];
 
 /**
@@ -768,14 +767,17 @@ $settings['entity_update_batch_size'] = 50;
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
-$databases['default']['default'] = array (
-  'database' => 'drupal86_site1',
-  'username' => 'root',
-  'password' => 'root',
-  'prefix' => 'drupal86_site1',
-  'host' => '10.0.75.1',
-  'port' => '3306',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-  'driver' => 'mysql',
+$databases['default']['default'] = array(
+    'database' => 'drupal86_site1',
+    'username' => 'root',
+    'password' => 'root',
+    'prefix' => 'drupal86_site1',
+    'host' => '10.0.75.1',
+    'port' => '3306',
+    'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+    'driver' => 'mysql',
 );
 $config_directories['sync'] = 'sites/site1/files/config_611yPK0qabLT3C55JbPIw0gQXSJK6qJ45IxMXQbYyBbnMlPhnuqOtOS3TN-waIVuiWY7tURdzA/sync';
+$settings['trusted_host_patterns'] = array(
+    '^site1\.drupal86\.com$',
+);
